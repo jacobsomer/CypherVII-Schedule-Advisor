@@ -32,6 +32,7 @@ go run main.go
 Here is what my console looked like:
 ![Screenshot (41)](https://user-images.githubusercontent.com/60264650/160234335-216b9f0c-8620-4bf7-bdd2-9ca5806c706b.png)
 ### Frontend Setup
+From the root of the project, run the following commands to start the react server.
 ```shell
 cd frontend
 npm i
