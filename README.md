@@ -39,5 +39,5 @@ npm i
 npm start
 ```
 
-### Speed Tip!
+### Speed Tip
 If you are using VScode, I recommend installing this [extension](https://marketplace.visualstudio.com/items?itemName=golang.Go) to make debugging go a lot easier. 
