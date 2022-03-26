@@ -42,4 +42,6 @@ npm start
 ### Speed Tip
 If you are using VScode, I recommend installing this [extension](https://marketplace.visualstudio.com/items?itemName=golang.Go) to make debugging go a lot easier. 
 
-### [Design Doc](https://docs.google.com/document/d/1HVcJX2Sz17s7ZvUu29QD6t-t4vI6zCIEqUJ1gXpjU2s/edit?usp=sharing)
+### Other Resources
+1. [Design Doc](https://docs.google.com/document/d/1HVcJX2Sz17s7ZvUu29QD6t-t4vI6zCIEqUJ1gXpjU2s/edit?usp=sharing)
+2. [Gin Webframework](https://github.com/gin-gonic/gin)
