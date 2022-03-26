@@ -79,14 +79,16 @@ func CheckPrerequisite(class Class) [][]Class {
 	AND := regexp.MustCompile(`AND`)
 	OR := regexp.MustCompile(`OR`)
 	Space := regexp.MustCompile(` `)
+	Parentheses := regexp.MustCompile(`([()])`)
 
 	orLists := AND.Split(preRequString, -1)
 
 	for _, orList := range orLists {
 
-		// trim of parentheses
-		if string(orList[1]) == "(" {
-			orList = orList[2 : len(orList)-2]
+		orList = Parentheses.ReplaceAllString(orList, "")
+
+		if len(orList) == 0 {
+			continue
 		}
 
 		orClassList := make([]Class, 0)
@@ -113,6 +115,86 @@ func CheckPrerequisite(class Class) [][]Class {
 
 	return neededClasses
 
+}
+
+func GetMajorRequirements(major string) map[int]Class {
+	if major == "CSCI" {
+		major = "csci_requirements"
+	}
+
+	db, err := sql.Open("sqlite3", "./database/courses.db")
+	checkErr(err)
+
+	defer db.Close()
+
+	classes := make(map[int]Class)
+
+	//if major == "CSCI" {
+	//
+	//}
+
+	rows, err := db.Query("SELECT * FROM csci_requirements")
+	checkErr(err)
+
+	i := 0
+	for rows.Next() {
+		temp := Class{}
+		err = rows.Scan(&temp.Subj, &temp.Id)
+		classes[i] = temp
+		i++
+	}
+
+	return classes
+
+}
+
+func GetGeneralRequirements(degree string) map[int]Class {
+	if degree == "B.S." {
+		degree = "bs_requirements"
+	}
+
+	db, err := sql.Open("sqlite3", "./database/courses.db")
+	checkErr(err)
+
+	defer db.Close()
+
+	classes := make(map[int]Class)
+
+	rows, err := db.Query("SELECT * FROM bs_requirements")
+	checkErr(err)
+
+	i := 0
+	for rows.Next() {
+		temp := Class{}
+		err = rows.Scan(&temp.Subj, &temp.Id)
+		classes[i] = temp
+		i++
+	}
+
+	return classes
+
+}
+
+func GetCredits(class Class) int {
+	db, err := sql.Open("sqlite3", "./database/courses.db")
+	checkErr(err)
+
+	defer db.Close()
+
+	credit := 0
+
+	rows, err := db.Query("SELECT Subject, ID, Credits, Start, End, Prerequisites FROM courses WHERE Subject = ? AND ID = ?", class.Subj, class.Id)
+	checkErr(err)
+	for rows.Next() {
+		temp := Class{}
+		err = rows.Scan(&temp.Subj, &temp.Id, &temp.Cred, &temp.Start, &temp.End, &temp.PreReq)
+		if debug {
+			fmt.Printf("%s, %s, Credits: %v From: %v-%v, PreRequs: %s\n", temp.Subj, temp.Id, temp.Cred, temp.Start, temp.End, temp.PreReq)
+		}
+		credit = temp.Cred
+	}
+
+	return credit
 }
 
 //func FilterByPrerequisite() []Class {

@@ -2,12 +2,20 @@ package main
 
 import (
 	db "backend/database"
+	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
+
+type MajorAndMinor struct {
+	Major1 string
+	Major2 string
+	Minor1 string
+	Minor2 string
+}
 
 func main() {
 	router := gin.Default()
@@ -31,6 +39,15 @@ func main() {
 
 func GetOptimalScheduleHandler(c *gin.Context) {
 	schedule := c.Param("schedule")
+
+	var majorMinor MajorAndMinor
+
+	_ = json.Unmarshal([]byte(schedule), &majorMinor)
+
+	schedule = fmt.Sprintf("M1: %s, M2: %s, m1: %s, m2: %s", majorMinor.Major1, majorMinor.Major2, majorMinor.Minor1, majorMinor.Minor2)
+
+	fmt.Println(schedule)
+
 	/* Schedule is an object given by the frontend we will define more precisely
 	Struct Params:
 		- classesTaken: List<int>
@@ -48,7 +65,7 @@ func GetAvailableCourses(c *gin.Context) {
 
 	class := db.Class{
 		Subj: "CSCI",
-		Id:   "303",
+		Id:   "241",
 	}
 
 	//classes := db.FilterBySubject("CSCI")
