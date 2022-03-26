@@ -9,3 +9,6 @@ Degree Works with a more intuitive UX/UI
 Once downloaded successfully, your command promp (Terminal if using mac) should look something like this when you run the following commands:
 
 ![Windows Command Prompt After Download](https://user-images.githubusercontent.com/60264650/160229555-526685ae-86ee-4446-bb74-f8cc49488638.png)
+
+### Speed Tip!
+If you are using VScode, I recommend installing this [extension](https://marketplace.visualstudio.com/items?itemName=golang.Go) to make debugging go a lot easier. 
