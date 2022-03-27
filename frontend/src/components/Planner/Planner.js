@@ -5,6 +5,7 @@ import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import OptimalSchedule from "../../api/OptimalSchedule";
 import Semester from "./Semester";
+
 const useStyles = makeStyles((theme) =>
     createStyles({
         Semester: {
@@ -23,6 +24,7 @@ const useStyles = makeStyles((theme) =>
 function RenderSemester(props) {
     const schedule = props.schedule;
     const index = props.index;
+
     return (
         <>
             {schedule == "" ? (
@@ -36,22 +38,24 @@ function RenderSemester(props) {
     );
 }
 
-export default function Planner() {
+export default function Planner(scheduleParams) {
     const classes = useStyles();
 
-    const [major, setMajor] = useState("Computer Science");
+    // const [major, setMajor] = useState("Computer Science");
     const [schedule, setSchedule] = useState("");
 
     useEffect(() => {
-        handleGenerateClick();
+        // setMajor(scheduleParams.major)
+        handleClick();
     }, []);
 
-    async function handleGenerateClick() {
+    async function handleClick() {
         // submit params used to generate possible schedule
-        const scheduleParams = {
-            major: major,
-            // TODO: add previous courses taken to params
-        };
+        // const params = {
+        //     major: major,
+        //     // TODO: add previous courses taken to params
+        // };
+        console.log("schedule params: ", scheduleParams)
         const schedule = await OptimalSchedule(scheduleParams);
         setSchedule(schedule);
     }
@@ -84,7 +88,7 @@ export default function Planner() {
                 <Button
                     style={{ left: "50%", transform: "translate(-50%)" }}
                     variant="contained"
-                    onClick={() => handleGenerateClick()}
+                    onClick={() => handleClick()}
                 >
                     Generate New Schedule
                 </Button>

@@ -8,13 +8,28 @@ import OptimalSchedule from "./api/OptimalSchedule";
 
 export function Render() {
     const [validAddress, setValidAddress] = useState("");
+    const scheduleParams = {
+        major: ""
+        // TODO: add previous courses taken to params
+    }
+    const [majorPar, setMajorPar] = useState("")
+
     async function handleSubmit(major) {
-        if (major == "Computer Science") {
+        switch (major) {
+            case "Computer Science":
+                scheduleParams.major = "CSCI"
+                break
+            case "CompSci":
+                scheduleParams.major = "CSCI"
+                break
+            case "International Relations":
+                scheduleParams.major = "INRL"
+                break
+        }
+        setMajorPar(scheduleParams.major)
+
+        if (scheduleParams.major === "CSCI" || scheduleParams.major === "INRL") {
             // submit params used to generate possible schedule
-            const scheduleParams = {
-                major: "CompSci",
-                // TODO: add previous courses taken to params
-            };
             setValidAddress("planner");
         } else {
             setValidAddress("");
@@ -42,7 +57,8 @@ export function Render() {
                 />
             );
         case "planner":
-            return <Planner />;
+            console.log("pre-planner", majorPar)
+            return <Planner props={majorPar}/>;
         default:
             return (
                 <Login

@@ -6,8 +6,17 @@ export default function Semester(props) {
     const list = props.courses;
     const half = Math.ceil(list.length / 2);
 
-    const firstHalf = list.slice(0, half);
-    const secondHalf = list.slice(-half);
+    let firstHalf
+    let secondHalf
+
+    if (list.length % 2 === 0) {
+        firstHalf = list.slice(0, half);
+        secondHalf = list.slice(-half);
+    } else {
+        firstHalf = list.slice(0, half);
+        secondHalf = list.slice(-half+1);
+    }
+
 
     return (
         <div

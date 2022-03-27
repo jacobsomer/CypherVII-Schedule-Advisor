@@ -1,13 +1,14 @@
-import { react } from "react";
+async function OptimalSchedule(props) {
 
-async function OptimalSchedule(scheduleParams) {
-    const major = scheduleParams.major;
+    // turn the parameters into the right format for the JSON
+    const scheduleParams = {
+        major: props.props
+    }
 
     const response = await fetch(
-        "http://localhost:8080/getOptimalSchedule/" + major,
+        "http://localhost:8080/getOptimalSchedule/" + JSON.stringify(scheduleParams),
     );
-    const json = await response.json();
-    return json;
+    return await response.json();
 }
 
 export default OptimalSchedule;

@@ -4,13 +4,34 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="17c16c7f-0fcb-4edf-a10a-4e315d113ac7" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/backend/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/backend/go.mod" afterDir="false" />
+    <list default="true" id="17c16c7f-0fcb-4edf-a10a-4e315d113ac7" name="Changes" comment="backend commit">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/backend/go.sum" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/backend/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/vendor/modules.txt" beforeDir="false" afterPath="$PROJECT_DIR$/backend/vendor/modules.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/vendor/github.com/gin-contrib/cors/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/vendor/github.com/gin-contrib/cors/.travis.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/vendor/github.com/gin-contrib/cors/LICENSE" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/vendor/github.com/gin-contrib/cors/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/vendor/github.com/gin-contrib/cors/config.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/vendor/github.com/gin-contrib/cors/cors.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/vendor/github.com/gin-contrib/cors/go.mod" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/vendor/github.com/gin-contrib/cors/go.sum" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/vendor/github.com/gin-contrib/cors/utils.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/vendor/github.com/go-playground/locales/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/backend/vendor/github.com/go-playground/locales/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/vendor/github.com/go-playground/locales/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/backend/vendor/github.com/go-playground/locales/go.sum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/vendor/github.com/go-playground/universal-translator/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/backend/vendor/github.com/go-playground/universal-translator/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/vendor/github.com/go-playground/universal-translator/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/backend/vendor/github.com/go-playground/universal-translator/go.sum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/vendor/github.com/go-playground/validator/v10/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/backend/vendor/github.com/go-playground/validator/v10/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/vendor/github.com/go-playground/validator/v10/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/backend/vendor/github.com/go-playground/validator/v10/go.sum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/vendor/github.com/json-iterator/go/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/backend/vendor/github.com/json-iterator/go/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/vendor/github.com/json-iterator/go/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/backend/vendor/github.com/json-iterator/go/go.sum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/vendor/github.com/leodido/go-urn/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/backend/vendor/github.com/leodido/go-urn/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/vendor/github.com/leodido/go-urn/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/backend/vendor/github.com/leodido/go-urn/go.sum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/vendor/github.com/mattn/go-isatty/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/backend/vendor/github.com/mattn/go-isatty/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/vendor/gopkg.in/yaml.v2/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/backend/vendor/gopkg.in/yaml.v2/go.mod" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/api/OptimalSchedule.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/api/OptimalSchedule.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/Planner/Planner.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Planner/Planner.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/Planner/Semester.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Planner/Semester.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/Questions.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Questions.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -53,7 +74,7 @@
     <property name="go.modules.go.list.on.any.changes.was.set" value="true" />
     <property name="go.sdk.automatically.set" value="true" />
     <property name="go.watchers.conflict.with.on.save.actions.check.performed" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/backend" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
