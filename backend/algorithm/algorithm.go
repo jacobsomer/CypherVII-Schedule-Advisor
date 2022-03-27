@@ -29,10 +29,10 @@ func MakeSchedule(major, degree string) Schedule {
 		semester := make([]db.Class, 0)
 
 		// loop over the major requirements first and try to fill as much as possible
-		loopOverRequirements(&majorRequirements, &fulfilled, &semester)
+		creds := loopOverRequirements(&majorRequirements, &fulfilled, &semester, 0)
 
 		// loop over the general requirements and try to fill what can be taken
-		loopOverRequirements(&generalRequirements, &fulfilled, &semester)
+		loopOverRequirements(&generalRequirements, &fulfilled, &semester, creds)
 
 		// append the semester to the schedule
 		schedule = append(schedule, semester)
@@ -44,9 +44,14 @@ func MakeSchedule(major, degree string) Schedule {
 	return schedule
 }
 
-func loopOverRequirements(r *map[int]db.Class, f *map[db.Class]int, s *[]db.Class) {
-	currentlyFulfilled := *f
-	semesterCredits := 0
+func loopOverRequirements(r *map[db.Class]db.Class, f *map[db.Class]int, s *[]db.Class, c int) int {
+	semesterCredits := c
+
+	alreadyFulfilled := make(map[db.Class]int)
+
+	for class, _ := range *f {
+		alreadyFulfilled[class] = 1
+	}
 
 	// current class. each iteration is a class in the major requirements
 currentClass:
@@ -56,14 +61,21 @@ currentClass:
 		// meeting requirements. each iteration is over one AND requirement block
 	meetingRequirements:
 		for _, reqs := range classRequirements {
-
+			if classRequirements == nil {
+				break
+			}
 			for _, req := range reqs {
 				fmt.Printf("class: %s %s and req: %s %s \n", class.Subj, class.Id, req.Subj, req.Id)
 
-				if _, ok := (currentlyFulfilled)[req]; ok {
+				_, ok := (alreadyFulfilled)[req]
+				if ok {
 
 					// if a requirement is found to be fulfilled in the block the meeting requirement loop is continued
 					continue meetingRequirements
+				}
+
+				if _, ok := (*r)[req]; !ok {
+					(*r)[req] = req
 				}
 
 			}
@@ -72,15 +84,23 @@ currentClass:
 			continue currentClass
 		}
 
+		//fmt.Printf("all requirements met for %s %s \n", class.Subj, class.Id)
+
+		credits := db.GetCredits(class)
+		if credits == 0 {
+			credits = 3
+		}
+
 		// if the credit limit is exceeded, continue the loop
-		if semesterCredits+db.GetCredits(class) > 18 {
+		if semesterCredits+credits > 15 {
 			continue
 		}
 
 		// if the meetingRequirements loop finished with a breakout this code is reached
-		*s = append(*s, class) // append the semester with the class
-		(*f)[class] = 1        // make an entry for the class in the fulfilled map
-		delete(*r, i)          // delete the majorRequirement from the required map
-
+		semesterCredits += credits // update the credits for the semester
+		*s = append(*s, class)     // append the semester with the class
+		(*f)[class] = 1            // make an entry for the class in the fulfilled map
+		delete(*r, i)              // delete the majorRequirement from the required map
 	}
+	return semesterCredits
 }

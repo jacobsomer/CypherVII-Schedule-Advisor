@@ -65,7 +65,7 @@ func GetAvailableCourses(c *gin.Context) {
 
 	class := db.Class{
 		Subj: "CSCI",
-		Id:   "241",
+		Id:   "243",
 	}
 
 	//classes := db.FilterBySubject("CSCI")

@@ -74,6 +74,9 @@ func CheckPrerequisite(class Class) [][]Class {
 		wantedClasses = append(wantedClasses, temp)
 	}
 
+	if len(wantedClasses) == 0 {
+		return nil
+	}
 	preRequString := wantedClasses[0].PreReq
 
 	AND := regexp.MustCompile(`AND`)
@@ -96,8 +99,7 @@ func CheckPrerequisite(class Class) [][]Class {
 
 		for _, orClass := range orClasses {
 
-			// trim of spaces
-			if string(orClass[0]) == " " {
+			for string(orClass[0]) == " " {
 				orClass = orClass[1:]
 			}
 
@@ -117,38 +119,39 @@ func CheckPrerequisite(class Class) [][]Class {
 
 }
 
-func GetMajorRequirements(major string) map[int]Class {
-	if major == "CSCI" {
-		major = "csci_requirements"
-	}
+func GetMajorRequirements(major string) map[Class]Class {
 
 	db, err := sql.Open("sqlite3", "./database/courses.db")
 	checkErr(err)
 
 	defer db.Close()
 
-	classes := make(map[int]Class)
+	classes := make(map[Class]Class)
 
-	//if major == "CSCI" {
-	//
-	//}
+	var rows *sql.Rows
 
-	rows, err := db.Query("SELECT * FROM csci_requirements")
-	checkErr(err)
+	if major == "CSCI" {
+		rows, err = db.Query("SELECT * FROM csci_requirements")
+		checkErr(err)
+	} else if major == "INRL" {
+		rows, err = db.Query("SELECT * FROM inrl_requirement")
+		checkErr(err)
+	} else {
+		rows, err = db.Query("SELECT * FROM csci_requirements")
+		checkErr(err)
+	}
 
-	i := 0
-	for rows.Next() {
+	for rows != nil && rows.Next() {
 		temp := Class{}
 		err = rows.Scan(&temp.Subj, &temp.Id)
-		classes[i] = temp
-		i++
+		classes[temp] = temp
 	}
 
 	return classes
 
 }
 
-func GetGeneralRequirements(degree string) map[int]Class {
+func GetGeneralRequirements(degree string) map[Class]Class {
 	if degree == "B.S." {
 		degree = "bs_requirements"
 	}
@@ -158,7 +161,7 @@ func GetGeneralRequirements(degree string) map[int]Class {
 
 	defer db.Close()
 
-	classes := make(map[int]Class)
+	classes := make(map[Class]Class)
 
 	rows, err := db.Query("SELECT * FROM bs_requirements")
 	checkErr(err)
@@ -167,7 +170,7 @@ func GetGeneralRequirements(degree string) map[int]Class {
 	for rows.Next() {
 		temp := Class{}
 		err = rows.Scan(&temp.Subj, &temp.Id)
-		classes[i] = temp
+		classes[temp] = temp
 		i++
 	}
 
@@ -196,10 +199,6 @@ func GetCredits(class Class) int {
 
 	return credit
 }
-
-//func FilterByPrerequisite() []Class {
-//
-//}
 
 func checkErr(err error) {
 	if err != nil {
