@@ -1,35 +1,40 @@
 package algorithm
 
 import (
-	db "backend/database"
+	"backend/database"
 	"fmt"
 )
 
+const debug = false
+
 // Schedule is the struct format in which the scheduled classes are stored
 // Each semester is a row in the struct
-type Schedule [][]db.Class
+type Schedule [][]database.Class
 
 // MakeSchedule returns a Schedule struct given a major and degree
 func MakeSchedule(major, degree string) Schedule {
-	fulfilled := make(map[db.Class]int)
+	fulfilled := make(map[database.Class]int)
 	schedule := Schedule{}
 
-	majorRequirements := db.GetMajorRequirements(major)
+	majorRequirements := database.GetMajorRequirements(major)
 
-	generalRequirements := db.GetGeneralRequirements(degree)
+	generalRequirements := database.GetGeneralRequirements(degree)
 
-	for _, class := range majorRequirements {
-		fmt.Printf("Subj: %s, ID: %s \n", class.Subj, class.Id)
-	}
-	for _, class := range generalRequirements {
-		fmt.Printf("Subj: %s, ID: %s \n", class.Subj, class.Id)
+	// print the course requirements when debug is true
+	if debug {
+		for _, class := range majorRequirements {
+			fmt.Printf("Subj: %s, ID: %s \n", class.Subj, class.Id)
+		}
+		for _, class := range generalRequirements {
+			fmt.Printf("Subj: %s, ID: %s \n", class.Subj, class.Id)
+		}
 	}
 
 	semesters := 0
 
 	// while the requirements have entries try to place them in the schedule
 	for len(majorRequirements)+len(generalRequirements) != 0 {
-		semester := make([]db.Class, 0)
+		semester := make([]database.Class, 0)
 
 		// loop over the major requirements first and try to fill as much as possible
 		credits := loopOverRequirements(&majorRequirements, &fulfilled, &semester, 0)
@@ -49,10 +54,10 @@ func MakeSchedule(major, degree string) Schedule {
 
 // loopOverRequirements takes pointers to required classes, fulfilled classes, a slice of semester classes,
 // and semester credits, and returns the semester credits
-func loopOverRequirements(r *map[db.Class]db.Class, f *map[db.Class]int, s *[]db.Class, c int) int {
+func loopOverRequirements(r *map[database.Class]database.Class, f *map[database.Class]int, s *[]database.Class, c int) int {
 	semesterCredits := c
 
-	alreadyFulfilled := make(map[db.Class]int)
+	alreadyFulfilled := make(map[database.Class]int)
 
 	for class, _ := range *f {
 		alreadyFulfilled[class] = 1
@@ -61,7 +66,7 @@ func loopOverRequirements(r *map[db.Class]db.Class, f *map[db.Class]int, s *[]db
 	// current class. each iteration is a class in the major requirements
 currentClass:
 	for i, class := range *r {
-		classRequirements := db.CheckPrerequisite(class)
+		classRequirements := database.CheckPrerequisite(class)
 
 		// meeting requirements. each iteration is over one AND requirement block
 	meetingRequirements:
@@ -70,9 +75,11 @@ currentClass:
 				break
 			}
 
-			var temp db.Class
+			var temp database.Class
 			for _, req := range reqs {
-				fmt.Printf("class: %s %s and req: %s %s \n", class.Subj, class.Id, req.Subj, req.Id)
+				if debug {
+					fmt.Printf("class: %s %s and req: %s %s \n", class.Subj, class.Id, req.Subj, req.Id)
+				}
 
 				_, ok := (alreadyFulfilled)[req]
 				if ok {
@@ -82,7 +89,6 @@ currentClass:
 				}
 
 				temp = req
-
 			}
 
 			if _, ok := (*r)[temp]; !ok {
@@ -96,7 +102,7 @@ currentClass:
 
 		//fmt.Printf("all requirements met for %s %s \n", class.Subj, class.Id)
 
-		credits := db.GetCredits(class)
+		credits := database.GetCredits(class)
 		if credits == 0 {
 			credits = 3
 		}
