@@ -1,12 +1,8 @@
 import { react } from "react";
 
-async function OptimalSchedule(props) {
-    const ma = {
-        major1: props.major1,
-        major2: props.major2,
-        minor1: props.minor1,
-        minor2: props.minor2,
-    };
+async function OptimalSchedule(scheduleParams) {
+    const major = scheduleParams.major;
+
     const response = await fetch(
         "http://localhost:8080/getOptimalSchedule/" + major,
     );

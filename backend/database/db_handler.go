@@ -18,6 +18,7 @@ type Class struct {
 	PreReq string
 }
 
+// FilterBySubject returns all courses of a given subject
 func FilterBySubject(subject string) []Class {
 	db, err := sql.Open("sqlite3", "./database/courses.db")
 	checkErr(err)
@@ -46,6 +47,7 @@ func FilterBySubject(subject string) []Class {
 
 }
 
+// CheckPrerequisite returns a list of lists of prerequisite classes
 func CheckPrerequisite(class Class) [][]Class {
 
 	// open a new db connection
@@ -119,6 +121,7 @@ func CheckPrerequisite(class Class) [][]Class {
 
 }
 
+// GetMajorRequirements returns a list of required courses given a major
 func GetMajorRequirements(major string) map[Class]Class {
 
 	db, err := sql.Open("sqlite3", "./database/courses.db")
@@ -151,6 +154,7 @@ func GetMajorRequirements(major string) map[Class]Class {
 
 }
 
+// GetGeneralRequirements returns the general education required classes
 func GetGeneralRequirements(degree string) map[Class]Class {
 	if degree == "B.S." {
 		degree = "bs_requirements"
@@ -178,6 +182,7 @@ func GetGeneralRequirements(degree string) map[Class]Class {
 
 }
 
+// GetCredits returns the number of credits of a given class
 func GetCredits(class Class) int {
 	db, err := sql.Open("sqlite3", "./database/courses.db")
 	checkErr(err)

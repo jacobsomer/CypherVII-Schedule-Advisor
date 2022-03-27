@@ -41,6 +41,11 @@ func main() {
 
 // GetSchedule returns a schedule based on the input major
 func GetSchedule(c *gin.Context) {
+
+	// Add CORS headers
+	c.Header("Access-Control-Allow-Origin", "*")
+	c.Header("Access-Control-Allow-Methods", "PUT, POST, GET, DELETE, OPTIONS")
+
 	sReq := c.Param("schedule")
 
 	var major Major
@@ -56,6 +61,11 @@ func GetSchedule(c *gin.Context) {
 
 // GetPrerequisites returns a list of course requirements
 func GetPrerequisites(c *gin.Context) {
+
+	// Add CORS headers
+	c.Header("Access-Control-Allow-Origin", "*")
+	c.Header("Access-Control-Allow-Methods", "PUT, POST, GET, DELETE, OPTIONS")
+
 	crs := c.Param("courseToSwitch")
 
 	var course Course // create a new Course object

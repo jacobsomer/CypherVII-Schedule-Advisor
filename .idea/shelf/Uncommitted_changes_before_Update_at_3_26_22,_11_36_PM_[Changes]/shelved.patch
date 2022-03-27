@@ -1,0 +1,20 @@
+Index: frontend/src/components/Questions.js
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import { useState } from \"react\";\nimport OptimalSchedule from \"../api/OptimalSchedule\";\n\nfunction Questions(props) {\n  const [major, setMajor] = useState(\"\");\n\n  function handleSubmit() {\n    // submit params used to generate possible schedule\n    const scheduleParams = {\n      major: major,\n      // TODO: add previous courses taken to params\n    };\n    OptimalSchedule(scheduleParams);\n  }\n  return (\n    <div>\n      <form onSubmit={() => handleSubmit()}>\n        <label>\n          What is Your Major?\n          <input\n            type=\"text\"\n            value={major}\n            onChange={(e) => setMajor(e.target.value)}\n          />\n        </label>\n        <input type=\"submit\" value=\"Submit\" />\n      </form>\n    </div>\n  );\n}\n\nexport default Questions;\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/frontend/src/components/Questions.js b/frontend/src/components/Questions.js
+--- a/frontend/src/components/Questions.js	(revision 825894c27f9b9f755481532b189ba864dcb83fc6)
++++ b/frontend/src/components/Questions.js	(date 1648352095063)
+@@ -24,6 +24,9 @@
+           />
+         </label>
+         <input type="submit" value="Submit" />
++        <button>
++          <h1>hi</h1>
++        </button>
+       </form>
+     </div>
+   );

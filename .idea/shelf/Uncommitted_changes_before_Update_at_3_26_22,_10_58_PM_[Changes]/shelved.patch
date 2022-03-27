@@ -1,0 +1,13 @@
+Index: frontend/package-lock.json
+===================================================================
+diff --git a/frontend/package-lock.json b/frontend/package-lock.json
+--- a/frontend/package-lock.json	
++++ b/frontend/package-lock.json	
+@@ -5,6 +5,7 @@
+   "requires": true,
+   "packages": {
+     "": {
++      "name": "frontend",
+       "version": "0.1.0",
+       "dependencies": {
+         "@testing-library/jest-dom": "^5.16.3",
