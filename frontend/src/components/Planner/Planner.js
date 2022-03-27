@@ -1,7 +1,9 @@
-import React from "react";
+import { React, useState } from "react";
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
+import Button from "@material-ui/core/Button";
+import OptimalSchedule from "../../api/OptimalSchedule";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -19,6 +21,18 @@ const useStyles = makeStyles((theme) =>
 
 export default function Planner() {
     const classes = useStyles();
+
+    const [major, setMajor] = useState("");
+    const [schedule, setSchedule] = useState("");
+
+    function handleGenerateClick() {
+        // submit params used to generate possible schedule
+        const scheduleParams = {
+            major: major,
+            // TODO: add previous courses taken to params
+        };
+        setSchedule(OptimalSchedule(scheduleParams));
+    }
 
     return (
         <div
@@ -45,6 +59,12 @@ export default function Planner() {
                     borderRadius: "10px",
                 }}
             >
+                <Button
+                    variant="contained"
+                    onClick={() => handleGenerateClick()}
+                >
+                    Generate New Schedule
+                </Button>
                 <Grid container spacing={3}>
                     <div
                         style={{
