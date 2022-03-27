@@ -5,8 +5,11 @@ import (
 	"fmt"
 )
 
+// Schedule is the struct format in which the scheduled classes are stored
+// Each semester is a row in the struct
 type Schedule [][]db.Class
 
+// MakeSchedule returns a Schedule struct given a major and degree
 func MakeSchedule(major, degree string) Schedule {
 	fulfilled := make(map[db.Class]int)
 	schedule := Schedule{}
@@ -29,10 +32,10 @@ func MakeSchedule(major, degree string) Schedule {
 		semester := make([]db.Class, 0)
 
 		// loop over the major requirements first and try to fill as much as possible
-		creds := loopOverRequirements(&majorRequirements, &fulfilled, &semester, 0)
+		credits := loopOverRequirements(&majorRequirements, &fulfilled, &semester, 0)
 
 		// loop over the general requirements and try to fill what can be taken
-		loopOverRequirements(&generalRequirements, &fulfilled, &semester, creds)
+		loopOverRequirements(&generalRequirements, &fulfilled, &semester, credits)
 
 		// append the semester to the schedule
 		schedule = append(schedule, semester)
@@ -44,6 +47,8 @@ func MakeSchedule(major, degree string) Schedule {
 	return schedule
 }
 
+// loopOverRequirements takes pointers to required classes, fulfilled classes, a slice of semester classes,
+// and semester credits, and returns the semester credits
 func loopOverRequirements(r *map[db.Class]db.Class, f *map[db.Class]int, s *[]db.Class, c int) int {
 	semesterCredits := c
 
