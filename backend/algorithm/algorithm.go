@@ -64,6 +64,8 @@ currentClass:
 			if classRequirements == nil {
 				break
 			}
+
+			var temp db.Class
 			for _, req := range reqs {
 				fmt.Printf("class: %s %s and req: %s %s \n", class.Subj, class.Id, req.Subj, req.Id)
 
@@ -74,11 +76,14 @@ currentClass:
 					continue meetingRequirements
 				}
 
-				if _, ok := (*r)[req]; !ok {
-					(*r)[req] = req
-				}
+				temp = req
 
 			}
+
+			if _, ok := (*r)[temp]; !ok {
+				(*r)[temp] = temp
+			}
+
 			// if one of the AND blocks did not have any fulfilled requirements, the meetingRequirements loop is not continued
 			// that means this code is reached
 			continue currentClass
@@ -96,11 +101,14 @@ currentClass:
 			continue
 		}
 
-		// if the meetingRequirements loop finished with a breakout this code is reached
-		semesterCredits += credits // update the credits for the semester
-		*s = append(*s, class)     // append the semester with the class
-		(*f)[class] = 1            // make an entry for the class in the fulfilled map
-		delete(*r, i)              // delete the majorRequirement from the required map
+		if _, ok := (*f)[class]; !ok {
+			// if the meetingRequirements loop finished with a breakout this code is reached
+			semesterCredits += credits // update the credits for the semester
+			*s = append(*s, class)     // append the semester with the class
+			(*f)[class] = 1            // make an entry for the class in the fulfilled map
+			delete(*r, i)              // delete the majorRequirement from the required map
+		}
+
 	}
 	return semesterCredits
 }
