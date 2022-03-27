@@ -1,7 +1,8 @@
 package main
 
 import (
-	db "backend/database"
+	"backend/algorithm"
+	"backend/database"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -10,26 +11,27 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type MajorAndMinor struct {
-	Major1 string
-	Major2 string
-	Minor1 string
-	Minor2 string
+const debug = false
+
+// Major is the incoming JSON format for GetSchedule
+type Major struct {
+	Major string
+}
+
+// Course is the incoming JSON format for GetPrerequisites
+type Course struct {
+	Subject string
+	Id      string
 }
 
 func main() {
 	router := gin.Default()
 
-	// Returns Optimal Class Schedule given classes already taken and major.
-	router.GET("/getOptimalSchedule/:schedule", GetOptimalScheduleHandler)
+	// Returns a schedule given a major class
+	router.GET("/getOptimalSchedule/:schedule", GetSchedule)
 
 	// Returns the Available Classes.
-	router.GET("/getAvailableCourses/:courseToSwitch", GetAvailableCourses)
-
-	// TODO: upload opencourseList database locally such that it can be accessed from code.
-	// Possible solution: https://github.com/boltdb/bolt see README.md
-
-	// TODO: upload Major/Graduation requirements database just as above
+	router.GET("/getPrerequisites/:courseToSwitch", GetPrerequisites)
 
 	err := router.Run(":8080")
 	if err != nil {
@@ -37,52 +39,62 @@ func main() {
 	}
 }
 
-func GetOptimalScheduleHandler(c *gin.Context) {
-	schedule := c.Param("schedule")
+// GetSchedule returns a schedule based on the input major
+func GetSchedule(c *gin.Context) {
+	sReq := c.Param("schedule")
 
-	var majorMinor MajorAndMinor
+	var major Major
 
-	_ = json.Unmarshal([]byte(schedule), &majorMinor)
+	_ = json.Unmarshal([]byte(sReq), &major)
 
-	schedule = fmt.Sprintf("M1: %s, M2: %s, m1: %s, m2: %s", majorMinor.Major1, majorMinor.Major2, majorMinor.Minor1, majorMinor.Minor2)
+	schedule := algorithm.MakeSchedule(major.Major, "B.S.")
 
-	fmt.Println(schedule)
+	scheduleJSON := marshalJSON(schedule)
 
-	/* Schedule is an object given by the frontend we will define more precisely
-	Struct Params:
-		- classesTaken: List<int>
-		- Majors/minors Desired: String
-		- Potentially other preferences (Stretch goal): String
-	*/
-	// TODO: write function that takes in above params and return class schedule
-	// Ex. func getOptimalSchedule(classesTaken, majors, minor, ....)
-	// See https://drive.google.com/file/d/1SDH2SaaErjDdW9vOl25BFjtamK0eBbC4/view?usp=sharing for pseudocode
-	c.String(http.StatusOK, "Hello %s", schedule)
+	c.String(http.StatusOK, scheduleJSON)
 }
 
-func GetAvailableCourses(c *gin.Context) {
-	//class := c.Param("courseToSwitch")
+// GetPrerequisites returns a list of course requirements
+func GetPrerequisites(c *gin.Context) {
+	crs := c.Param("courseToSwitch")
 
-	class := db.Class{
-		Subj: "CSCI",
-		Id:   "243",
+	var course Course // create a new Course object
+
+	_ = json.Unmarshal([]byte(crs), &course) // unmarshal the json into the course object
+
+	class := database.Class{
+		Subj: course.Subject,
+		Id:   course.Id,
 	}
 
-	//classes := db.FilterBySubject("CSCI")
+	classes := database.CheckPrerequisite(class) // gets the prerequisites for the class
 
-	classes := db.CheckPrerequisite(class)
-
-	output := ""
-	for _, cl := range classes {
-		for _, cl := range cl {
-			fmt.Printf("%s, %s\n", cl.Subj, cl.Id)
-			output += " " + fmt.Sprintf("%s, %s\n", cl.Subj, cl.Id)
+	// print the classes to the console
+	if debug {
+		output := ""
+		for _, cl := range classes {
+			for _, cl := range cl {
+				fmt.Printf("%s, %s\n", cl.Subj, cl.Id)
+				output += " " + fmt.Sprintf("%s, %s\n", cl.Subj, cl.Id)
+			}
 		}
 	}
 
-	//cl := classes[0][0]
-	//singleClass := fmt.Sprintf("%s, %s, Credits: %v From: %v-%v, PreRequs: %s\n", cl.Subj, cl.Id, cl.Cred, cl.Start, cl.End, cl.PreReq)
+	classesJSON := marshalJSON(classes) // marshals the object
 
-	//courseToSwitch := c.Param("courseToSwitch")
-	c.String(http.StatusOK, output)
+	c.String(http.StatusOK, classesJSON) // writes the json to the page
+}
+
+// marshalJSON converts a struct into a JSON formatted string
+func marshalJSON(rawStruct interface{}) string {
+	marshalled, err := json.Marshal(rawStruct)
+	checkErr(err)
+
+	return string(marshalled)
+}
+
+func checkErr(err error) {
+	if err != nil {
+		panic(err)
+	}
 }

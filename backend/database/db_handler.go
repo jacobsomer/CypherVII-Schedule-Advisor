@@ -47,21 +47,19 @@ func FilterBySubject(subject string) []Class {
 }
 
 func CheckPrerequisite(class Class) [][]Class {
+
+	// open a new db connection
 	db, err := sql.Open("sqlite3", "./database/courses.db")
 	checkErr(err)
 
-	defer db.Close()
+	defer db.Close() // defer the closure of the db connection
 
+	// make two variables to
 	wantedClasses := make([]Class, 0)
 	neededClasses := make([][]Class, 0)
 
-	lim := 1000
-	if debug {
-		lim = 10
-	}
-
 	// get the prerequisites for the class from the db
-	rows, err := db.Query("SELECT Prerequisites FROM courses WHERE Subject = ? AND ID = ? LIMIT 1", class.Subj, class.Id, lim)
+	rows, err := db.Query("SELECT Prerequisites FROM courses WHERE Subject = ? AND ID = ?", class.Subj, class.Id)
 	checkErr(err)
 
 	//var preRequ string
@@ -74,11 +72,13 @@ func CheckPrerequisite(class Class) [][]Class {
 		wantedClasses = append(wantedClasses, temp)
 	}
 
+	// if the class does not exist in the db return nil
 	if len(wantedClasses) == 0 {
 		return nil
 	}
 	preRequString := wantedClasses[0].PreReq
 
+	// create RegExpressions to clean up the strings
 	AND := regexp.MustCompile(`AND`)
 	OR := regexp.MustCompile(`OR`)
 	Space := regexp.MustCompile(` `)
