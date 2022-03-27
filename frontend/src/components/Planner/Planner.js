@@ -72,6 +72,7 @@ export default function Planner() {
                     ></div>
                     <Grid item xs={12} sm={6}>
                         <Paper className={classes.Semester}>Fall 2022</Paper>
+                        {/* <Semester courses={courses[0]}/> */}
                     </Grid>
                     <Grid item xs={12} sm={6}>
                         <Paper className={classes.Semester}>Spring 2023</Paper>
