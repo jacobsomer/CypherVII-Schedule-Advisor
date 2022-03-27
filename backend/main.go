@@ -41,6 +41,10 @@ func main() {
 
 // GetSchedule returns a schedule based on the input major
 func GetSchedule(c *gin.Context) {
+	// Add CORS headers
+	c.Header("Access-Control-Allow-Origin", "http://localhost:3000");
+	c.Header("Access-Control-Allow-Methods", "PUT, POST, GET, DELETE, OPTIONS");
+
 	sReq := c.Param("schedule")
 
 	var major Major
