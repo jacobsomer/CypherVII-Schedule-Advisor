@@ -1,0 +1,16 @@
+Index: frontend/package-lock.json
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/frontend/package-lock.json b/frontend/package-lock.json
+--- a/frontend/package-lock.json	(revision d4bca44eb0a683159eff53811c5f34f4da26eb4c)
++++ b/frontend/package-lock.json	(date 1648333485717)
+@@ -5,6 +5,7 @@
+   "requires": true,
+   "packages": {
+     "": {
++      "name": "frontend",
+       "version": "0.1.0",
+       "dependencies": {
+         "@testing-library/jest-dom": "^5.16.3",
